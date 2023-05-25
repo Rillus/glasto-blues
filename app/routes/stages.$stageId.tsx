@@ -9,11 +9,11 @@ import {ActGrid} from "~/components/ActGrid";
 import assert from "assert";
 
 const PathNames = {
-  acts: '/acts/:stageId',
+  stages: '/stages/:stageId',
 } as const;
 
 interface Args extends ActionFunctionArgs {
-  params: Params<ParamParseKey<typeof PathNames.acts>>;
+  params: Params<ParamParseKey<typeof PathNames.stages>>;
 }
 
 export const loader = async ({params}:Args) => {
@@ -34,9 +34,9 @@ export const loader = async ({params}:Args) => {
     },
   });
 
-  if (!stage) {
-    return json({message: 'Stage not found', status: 404});
-  }
+  // if (!stage) {
+  //   return json({stage: []});
+  // }
   console.log(stage);
 
   return json({stage});
@@ -45,7 +45,7 @@ export const loader = async ({params}:Args) => {
 export default function StageRoute() {
   const data = useLoaderData<typeof loader>();
 
-  if (data.status === 404) {
+  if (!data.stage) {
     return (
       <div>
         <h1>Stage not found</h1>

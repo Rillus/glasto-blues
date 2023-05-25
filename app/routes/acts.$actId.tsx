@@ -10,21 +10,28 @@ const PathNames = {
 } as const;
 
 interface Args extends ActionFunctionArgs {
-  params: Params<ParamParseKey<typeof PathNames.acts>>;
+  params: {
+    actId: string
+  };
 }
 
-export const loader = async ({params}:Args) => {
-  const nameToMatch = params.actId.replace(/-+/g, ' ');
+export const loader = async (params:Args) => {
+  console.log(params.params.actId);
+  const nameToMatch = params.params.actId.replace(/-+/g, ' ');
+  console.log(nameToMatch);
   const actItem = await prisma.act.findMany({
     where: {
       name: {
-        contains: nameToMatch
+        contains: nameToMatch,
+        mode: 'insensitive'
       },
     }
   });
 
+  console.log(actItem);
+
   if (!actItem || actItem.length === 0) {
-    return json({message: 'Act not found', status: 404});
+    return json({actItem: []});
   }
 
   return json({actItem});
@@ -33,13 +40,10 @@ export const loader = async ({params}:Args) => {
 export default function ActRoute() {
   const data = useLoaderData<typeof loader>();
 
-  if (data.status === 404) {
+  if (!data.actItem || data.actItem.length === 0) {
     return (
       <div>
         <h1>Act not found</h1>
-        <p>
-          <button onClick={() => history.goBack()}>Go back</button>
-        </p>
       </div>
     );
   }

@@ -14,10 +14,8 @@ export const loader = async () => {
 }
 
 export default function StagesIndexRoute() {
-  const data = useLoaderData<typeof randomStage>();
-
-  console.log(data.randomStage);
-
+  const data = useLoaderData<typeof loader>();
+  
   return (
     <div>
       <h1 className="u-text-center">
