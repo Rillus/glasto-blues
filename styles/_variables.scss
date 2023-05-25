@@ -1,0 +1,90 @@
+$outer-space: #252d2f;
+$black: $outer-space;
+$madison: #0B2B60;
+$white: #fff;
+$alto: #dcdcdc;
+$nobel: #b3b3b3;
+$geyser: #ccdadd;
+$sherpa-blue: #004855;
+$dodger-blue: #2294ff;
+$harlequin: #43cf00;
+$cyan: #07D9FF;
+$tasman: #ccdccb;
+$roof-terracotta: #B02123;
+
+$lightest: $white;
+$light: $geyser;
+$dark: $outer-space;
+$button-contrast: $outer-space;
+
+$spacer: 12px;
+$light-gradient: linear-gradient(5deg, rgba(255,255,255,0.1) 2%, rgba(255,255,255,0));
+$light-header-gradient: linear-gradient(-5deg, rgba(255,255,255,0.1) 2%, rgba(255,255,255,0));
+
+:root {
+  --background: #{$white};
+  --backgroundContrast: #{$outer-space};
+  --primary: #{$cyan};
+  --primaryContrast: #{$outer-space};
+  --warning: #{$roof-terracotta};
+  --warningContrast: #{$white};
+  --past: #{$alto};
+  --pastContrast: #{$nobel};
+  --pastSuccess: #{$tasman};
+  --pastSuccessContrast: #{$nobel};
+  --current: #{$dodger-blue};
+  --currentContrast: #{$outer-space};
+  --currentSuccess: #{$harlequin};
+  --currentSuccessContrast: #{$harlequin};
+  --white: #{$white};
+  --black: #{$black};
+  --jan: #48589a;
+  --feb: #275da4;
+  --mar: #3d8aae;
+  --apr: #659a8b;
+  --may: #9bb146;
+  --jun: #b6c741;
+  --jul: #dacd48;
+  --aug: #ecd344;
+  --sep: #fbb841;
+  --oct: #f88428;
+  --nov: #e55e34;
+  --dec: #99207a;
+  --wed: var(--apr);
+  --thu: var(--jun);
+  --fri: var(--aug);
+  --sat: var(--oct);
+  --sun: var(--dec);
+  --mon: var(--feb);
+  --stage1: #9e2d2d;
+  --stage2: #a2492b;
+  --stage3: #a46027;
+  --stage4: #a57422;
+  --stage5: #A59D08;
+  --stage6: #7fa107;
+  --stage7: #3ba308;
+  --stage8: #289c7f;
+  --stage9: #0899A0;
+  --stage10: #2b73a0;
+  --stage11: #2d5ba0;
+  --stage12: #071E9E;
+  --stage13: #61189d;
+  --stage14: #96079b;
+}
+
+.dark {
+  --background: #{$outer-space};
+  --backgroundContrast: #{$white};
+  --primary: #{$cyan};
+  --primaryContrast: #{$outer-space};
+  --warning: #{$roof-terracotta};
+  --warningContrast: #{$white};
+  --past: #{$alto};
+  --pastContrast: #{$nobel};
+  --pastSuccess: #{$tasman};
+  --pastSuccessContrast: #{$nobel};
+  --current: #{$dodger-blue};
+  --currentContrast: #{$outer-space};
+  --currentSuccess: #{$harlequin};
+  --currentSuccessContrast: #{$harlequin};
+}

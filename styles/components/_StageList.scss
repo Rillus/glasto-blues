@@ -1,0 +1,11 @@
+@import "../variables";
+
+.StageList {
+  margin: auto;
+  text-align: center;
+
+  .StageChip-name {
+    display: block;
+    min-width: 200px;
+  }
+}

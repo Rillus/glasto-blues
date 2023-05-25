@@ -1,0 +1,57 @@
+@import "../variables";
+
+.DateChip {
+  display: inline-block;
+
+  &-day {
+    padding: #{$spacer / 4} #{$spacer / 2};
+    border-radius: 5px;
+    border: 1px solid var(--currentContrast);
+    display: inline-block;
+    width: 40px;
+    line-height: 30px;
+    text-align: center;
+    margin: $spacer/2 0;
+
+    &--wed {
+      background-color: var(--wed);
+      color: var(--white);
+    }
+    &--thu {
+      background-color: var(--thu);
+      color: var(--black);
+    }
+    &--fri {
+      background-color: var(--fri);
+      color: var(--black);
+    }
+    &--sat {
+      background-color: var(--sat);
+      color: var(--black);
+    }
+    &--sun {
+      background-color: var(--sun);
+      color: var(--white);
+    }
+    &--mon {
+      background-color: var(--mon);
+      color: var(--white);
+    }
+  }
+
+  &-time {
+    padding: #{$spacer / 4} #{$spacer / 2};
+    border-radius: 5px;
+    border: 1px solid var(--currentContrast);
+    display: inline-block;
+    width: 70px;
+    line-height: 30px;
+    text-align: center;
+    margin: $spacer/2 0;
+    background: $light-gradient;
+  }
+
+  &-until {
+
+  }
+}

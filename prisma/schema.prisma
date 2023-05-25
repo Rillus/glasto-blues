@@ -36,3 +36,31 @@ model Note {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }
+
+model Act {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  short       String
+  start       DateTime
+  end         DateTime
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  location    Location @relation(fields: [locationId], references: [id])
+  locationId  Int
+}
+
+model Location {
+  id          Int   @id @default(autoincrement())
+  name        String
+  description String?
+  latitude    Float?
+  longitude   Float?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  Act         Act[]
+}

@@ -1,0 +1,48 @@
+@import "../variables";
+
+.Header {
+  margin-bottom: 0;
+  line-height: 39px;
+  padding: 0 0 0 5px;
+  background: url('/images/pyramid-sunset-blur.jpg') no-repeat top center fixed var(--background);
+  background-size: cover;
+  display: flex;
+
+  .dark & {
+    background: $light-header-gradient, url('/images/pyramid-sunset-blur-dark.jpg') no-repeat top center fixed var(--background);
+    background-size: cover;
+  }
+
+  h3 {
+    margin: 0 0 0 2px;
+    font-size: 24px;
+    line-height: 59px;
+    padding-left: $spacer;
+    color: var(--backgroundContrast);
+  }
+
+  a {
+    color: var(--backgroundContrast);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: $spacer;
+  }
+
+  @media screen and (max-width: 420px) {
+    h3 {
+      font-size: 18px;
+    }
+  }
+
+  @media screen and (max-width: 359px) {
+    font-size: 14px;
+  }
+}

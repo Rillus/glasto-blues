@@ -21,7 +21,9 @@
     "pretest:e2e:run": "npm run build",
     "test:e2e:run": "cross-env PORT=8811 start-server-and-test start:mocks http://localhost:8811 \"npx cypress run\"",
     "typecheck": "tsc && tsc -p cypress",
-    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run"
+    "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
+    "build:css": "node-sass ./styles -o ./app/styles --output-style compressed",
+    "dev:css": "npm run build:css && node-sass -rw ./styles -o ./app/styles"
   },
   "prettier": {},
   "eslintIgnore": [
@@ -44,6 +46,7 @@
     "express": "^4.18.2",
     "isbot": "^3.6.8",
     "morgan": "^1.10.0",
+    "node-sass": "^9.0.0",
     "prom-client": "^14.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,0 +1,17 @@
+@import "../variables";
+
+.ActChip {
+  display: inline-block;
+  margin: $spacer/2 0;
+
+  a {
+    padding: #{$spacer / 4} #{$spacer / 2};
+    border-radius: 5px;
+    border: 1px solid var(--currentContrast);
+    display: inline-block;
+    line-height: 30px;
+    background: $light-gradient;
+    width: 100%;
+    text-decoration: none;
+  }
+}

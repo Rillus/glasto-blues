@@ -1,0 +1,36 @@
+@import "../variables";
+
+.Grid {
+  display: grid;
+
+
+  &-row {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 5fr 2fr;
+  }
+
+  &--showStage {
+    .Grid-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 2fr;
+      grid-template-rows: auto;
+    }
+
+    .StageChip-name {
+      max-width: calc(100% - 30px);
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .ActChip {
+    max-width: calc(100% - 20px);
+  }
+
+  .DateChip {
+    justify-self: end;
+    min-width: 320px;
+    text-align: right;
+  }
+}

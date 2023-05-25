@@ -1,0 +1,87 @@
+@import "../variables";
+
+.StageChip {
+  display: inline-block;
+
+  a,
+  a:visited,
+  a:hover {
+      color: var(--white);
+      text-decoration: none;
+  }
+
+  &-name {
+    padding: #{$spacer / 4} #{$spacer};
+    border-radius: 5px;
+    border: 1px solid var(--white);
+    display: inline-block;
+    line-height: 30px;
+    margin: $spacer/2 0;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    h1 & {
+      padding: #{$spacer} #{$spacer * 1.5};
+      margin: auto;
+      border-width: 2px;
+      border-radius: 7px;
+    }
+
+    &--1 {
+      background-color: var(--stage1);
+      color: var(--white);
+    }
+    &--2 {
+      background-color: var(--stage2);
+      color: var(--white);
+    }
+    &--3 {
+      background-color: var(--stage3);
+      color: var(--white);
+    }
+    &--4 {
+      background-color: var(--stage4);
+      color: var(--white);
+    }
+    &--5 {
+      background-color: var(--stage5);
+      color: var(--white);
+    }
+    &--6 {
+      background-color: var(--stage6);
+      color: var(--white);
+    }
+    &--7 {
+      background-color: var(--stage7);
+      color: var(--white);
+    }
+    &--8 {
+      background-color: var(--stage8);
+      color: var(--white);
+    }
+    &--9 {
+      background-color: var(--stage9);
+      color: var(--white);
+    }
+    &--10 {
+      background-color: var(--stage10);
+      color: var(--white);
+    }
+    &--11 {
+      background-color: var(--stage11);
+      color: var(--white);
+    }
+    &--12 {
+      background-color: var(--stage12);
+      color: var(--white);
+    }
+    &--13 {
+      background-color: var(--stage13);
+      color: var(--white);
+    }
+    &--14 {
+      background-color: var(--stage14);
+      color: var(--white);
+    }
+  }
+}
