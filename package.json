@@ -23,7 +23,7 @@
     "typecheck": "tsc && tsc -p cypress",
     "validate": "run-p \"test -- --run\" lint typecheck test:e2e:run",
     "build:css": "node-sass ./styles -o ./app/styles --output-style compressed",
-    "dev:css": "npm run build:css && node-sass -rw ./styles -o ./app/styles"
+    "dev2:css": "npm run build:css && node-sass -rw ./styles -o ./app/styles"
   },
   "prettier": {},
   "eslintIgnore": [
