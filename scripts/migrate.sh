@@ -7,3 +7,4 @@ echo 10 >/proc/sys/vm/swappiness
 swapon /swapfile
 echo 1 >/proc/sys/vm/overcommit_memory
 npx prisma migrate deploy
+npx ts-node --require tsconfig-paths/register prisma/seed.ts
