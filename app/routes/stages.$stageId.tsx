@@ -13,12 +13,16 @@ const PathNames = {
 } as const;
 
 interface Args extends ActionFunctionArgs {
-  params: Params<ParamParseKey<typeof PathNames.stages>>;
+  params: {
+    stageId: string
+  }
 }
 
-export const loader = async ({params}:Args) => {
-  assert(params.stageId, 'Stage ID is required')
-  const nameToMatch = params.stageId.replace(/-+/g, ' ');
+export const loader = async (params:Args) => {
+  console.log(params);
+  assert(params, 'Stage ID is required')
+  const nameToMatch = params.params.stageId.replace(/-+/g, ' ');
+  console.log(nameToMatch);
   const stage = await prisma.location.findFirst({
     include: {
       Act: {
@@ -29,7 +33,8 @@ export const loader = async ({params}:Args) => {
     },
     where: {
       name: {
-        contains: nameToMatch
+        contains: nameToMatch,
+        mode: 'insensitive'
       },
     },
   });
