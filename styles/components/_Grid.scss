@@ -5,32 +5,88 @@
 
 
   &-row {
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 5fr 2fr;
+    display: flex;
+    column-gap: $spacer;
+    justify-content: space-between;
+
+    .ActChip {
+      display: block;
+      flex: auto;
+    }
+
+    .DateChip {
+      width: auto;
+    }
+
+    @media (max-width: $break-md) {
+      flex-wrap: wrap;
+      border-bottom: 1px dashed var(--currentContrast);
+
+      .DateChip {
+        width: 100%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+
+        & > * {
+          width: 32%;
+        }
+
+        &-until {
+          width: auto;
+          flex-basis: content;
+        }
+      }
+
+      .ActChip {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: $break-xs) {
+      .DateChip {
+        & > * {
+          width: auto;
+        }
+      }
+    }
   }
 
   &--showStage {
     .Grid-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr 2fr;
-      grid-template-rows: auto;
+      display: flex;
+      column-gap: $spacer;
+      justify-content: space-between;
+
+      .StageChip {
+        width: 200px;
+        margin-left: auto;
+      }
+
+      .ActChip {
+        display: block;
+        flex: auto;
+      }
+
+      @media (max-width: $break-md) {
+        .StageChip {
+          flex: auto;
+        }
+      }
     }
 
     .StageChip-name {
-      max-width: calc(100% - 30px);
       width: 100%;
       text-align: center;
     }
   }
 
   .ActChip {
-    max-width: calc(100% - 20px);
+
   }
 
   .DateChip {
     justify-self: end;
-    min-width: 320px;
     text-align: right;
   }
 }

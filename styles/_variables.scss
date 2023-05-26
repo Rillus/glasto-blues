@@ -21,6 +21,12 @@ $spacer: 12px;
 $light-gradient: linear-gradient(5deg, rgba(255,255,255,0.1) 2%, rgba(255,255,255,0));
 $light-header-gradient: linear-gradient(-5deg, rgba(255,255,255,0.1) 2%, rgba(255,255,255,0));
 
+$break-xs: 320px;
+$break-sm: 576px;
+$break-md: 768px;
+$break-lg: 992px;
+$break-xl: 1200px;
+
 :root {
   --background: #{$white};
   --backgroundContrast: #{$outer-space};
