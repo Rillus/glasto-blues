@@ -1,38 +1,71 @@
-import type { LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import {json, LoaderArgs} from "@remix-run/node";
 import {Link, useLoaderData} from "@remix-run/react";
 import type {Params} from "@remix-run/react";
 import { prisma } from "~/db.server";
-import type {ActionFunctionArgs, ParamParseKey} from "@remix-run/router";
+import {getUserId} from "~/session.server";
+export type { SavedAct } from "@prisma/client";
+
 
 const PathNames = {
   acts: '/acts/:actId',
 } as const;
 
-interface Args extends ActionFunctionArgs {
+interface ActsLoaderArgs extends LoaderArgs {
   params: {
     actId: string
-  };
+  }
 }
 
-export const loader = async (params:Args) => {
-  console.log(params.params.actId);
-  const nameToMatch = params.params.actId.replace(/-+/g, ' ');
-  console.log(nameToMatch);
-  const actItem = await prisma.act.findMany({
+export const loader = async ({params, request}:ActsLoaderArgs) => {
+  const isSelected = new URL(request.url).searchParams.get("isSelected");
+  console.log('isSelected', isSelected);
+
+  const nameToMatch = params.actId.replace(/-+/g, ' ');
+  console.log('nameToMatch', nameToMatch);
+  const actItem = await prisma.act.findFirst({
     where: {
       name: {
-        contains: nameToMatch,
-        mode: 'insensitive'
+        search: nameToMatch.split(" ").join(" & ")
       },
+    },
+    include: {
+      savedAct: {
+        where: {
+          userId: await getUserId(request)
+        }
+      }
     }
   });
 
-  console.log(actItem);
-
-  if (!actItem || actItem.length === 0) {
-    return json({actItem: []});
+  if  (!actItem) {
+    console.log("Act not found");
+    return json({actItem: null});
+  } else {
+    const userId = await getUserId(request) as string;
+    const actId = actItem.id;
+    if (actItem.savedAct.length === 0 && isSelected) {
+      console.log("Act is not saved");
+      // Add SavedAct for this act
+      const savedAct = await prisma.savedAct.create({
+        data: {
+          userId: userId,
+          actId: actId
+        }
+      });
+      actItem.savedAct.push(savedAct);
+    } else if (actItem.savedAct.length > 0 && isSelected === 'false') {
+      console.log("Act is saved - remove it");
+      // delete SavedAct for this act & user
+      await prisma.savedAct.delete({
+        where: {
+          id: actItem.savedAct[0].id
+        }
+      });
+      actItem.savedAct = [];
+    }
   }
+
+  console.log(actItem);
 
   return json({actItem});
 };
@@ -40,7 +73,7 @@ export const loader = async (params:Args) => {
 export default function ActRoute() {
   const data = useLoaderData<typeof loader>();
 
-  if (!data.actItem || data.actItem.length === 0) {
+  if (!data.actItem) {
     return (
       <div>
         <h1>Act not found</h1>
@@ -52,10 +85,10 @@ export default function ActRoute() {
     <div className="main">
       <h1>
         <Link to=".">
-          {data.actItem[0].name}
+          {data.actItem.name}
         </Link>
       </h1>
-      <p>{data.actItem[0].description}</p>
+      <p>{data.actItem.description}</p>
     </div>
   );
 }

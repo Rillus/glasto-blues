@@ -1,28 +1,24 @@
 @import "../variables";
 
-.ActChip {
-  display: inline-flex;
-  margin: $spacer/2 0;
+.Button {
+  display: inline-block;
+  margin: $spacer/2 $spacer;
+  min-width: 100px;
+  text-align: center;
   padding: #{$spacer / 4} #{$spacer / 2};
   border-radius: 5px;
   border: 1px solid var(--currentContrast);
   line-height: 30px;
-  background: $light-gradient;
+  background: var(--current);
+  text-decoration: none;
 
   &-button {
     padding: 0 $spacer/2;
-    margin: 0 #{$spacer/2} 0 -#{$spacer/4};
+    margin-right: $spacer/2;
     font-size: 1.2rem;
     border-radius: 3px;
     border: transparent;
     background: rgba(255,255,255, 0.1);
     color: var(--white);
-  }
-
-  a {
-    display: inline-block;
-    width: 100%;
-    text-decoration: none;
-    align-self: center;
   }
 }

@@ -1,0 +1,24 @@
+@import "../variables";
+
+.Notes {
+  &-main {
+    background: rgba(0,0,0, 0.1);
+    border-radius: 5px;
+  }
+
+  &-header {
+    border-radius: 5px 5px 0 0;
+  }
+
+  &-list {
+    border-right: 1px solid var(--currentContrast);
+
+    &Item {
+      border-bottom: 1px solid var(--currentContrast);
+    }
+  }
+
+  hr {
+    border-top: 1px solid var(--currentContrast);
+  }
+}

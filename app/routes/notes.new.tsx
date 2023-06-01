@@ -54,6 +54,7 @@ export default function NewNotePage() {
         gap: 8,
         width: "100%",
       }}
+      className="Notes"
     >
       <div>
         <label className="flex w-full flex-col gap-1">

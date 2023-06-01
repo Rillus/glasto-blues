@@ -1,34 +1,80 @@
-import type { V2_MetaFunction } from "@remix-run/node";
-import { Link } from "@remix-run/react";
-
+import type {LoaderArgs} from "@remix-run/node";
+import {Link, useLoaderData} from "@remix-run/react";
 import { useOptionalUser } from "~/utils";
+import {prisma} from "~/db.server";
+import {getUserId} from "~/session.server";
+import {ActGrid} from "~/components/ActGrid";
+import type {Act} from "@prisma/client";
 
-export const meta: V2_MetaFunction = () => [{ title: "Remix Notes" }];
+interface ActWithSaved extends Act {
+  savedAct: Array<{
+    id: string
+  }>
+}
+
+export const loader = async ({request}: LoaderArgs) => {
+  const savedActs = await prisma.savedAct.findMany({
+    orderBy: {
+      act: {
+        start: 'asc'
+      }
+    },
+    where: {
+      userId: await getUserId(request)
+    },
+    include: {
+      act: {
+        include: {
+          location: true
+        }
+      }
+    }
+  });
+
+  const filteredSavedActs = savedActs.map((savedAct) => {
+    let returnSavedAct = savedAct.act as unknown as ActWithSaved;
+    returnSavedAct.savedAct= [];
+    returnSavedAct.savedAct.push({
+      id: savedAct.id
+    });
+    return returnSavedAct
+  });
+
+  return {filteredSavedActs};
+}
 
 export default function Index() {
   const user = useOptionalUser();
-  return (
-    <main className="relative min-h-screen sm:flex sm:items-center sm:justify-center">
+  const data = useLoaderData<typeof loader>();
+  console.log(data);
 
+  return (
+    <main>
       {user ? (
-        <Link
-          to="/notes"
-          className="flex items-center justify-center rounded-md border border-transparent px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-        >
-          View Notes for {user.email}
-        </Link>
+        <div>
+          {data.filteredSavedActs.length === 0 ? (
+            <p>No saved acts yet. Head to <Link to="/acts" className="underline">Acts</Link> or <Link to="/stages"
+              className="underline">Stages</Link> and add some, why don't you?
+            </p>
+          ) : (
+            <ActGrid data={data.filteredSavedActs} options={{showStages: true}}></ActGrid>
+          )}
+          <p>You can also add <Link to="/notes" className="underline">
+              notes
+            </Link> for some reason.
+          </p>
+        </div>
       ) : (
-        <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
+        <div>
+          To save acts and view your saved lineup, please sign up or log in.
           <Link
             to="/join"
-            className="flex items-center justify-center rounded-md border border-transparent px-4 py-3 text-base font-medium text-blue-700 shadow-sm hover:bg-blue-50 sm:px-8"
-          >
+            className="Button">
             Sign up
           </Link>
           <Link
             to="/login"
-            className="flex items-center justify-center rounded-md bg-blue-500 px-4 py-3 font-medium text-white hover:bg-blue-600"
-          >
+            className="Button">
             Log In
           </Link>
         </div>

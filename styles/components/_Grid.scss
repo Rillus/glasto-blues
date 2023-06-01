@@ -3,14 +3,12 @@
 .Grid {
   display: grid;
 
-
   &-row {
     display: flex;
     column-gap: $spacer;
     justify-content: space-between;
 
     .ActChip {
-      display: block;
       flex: auto;
     }
 
@@ -61,10 +59,10 @@
       .StageChip {
         width: 200px;
         margin-left: auto;
+        align-self: center;
       }
 
       .ActChip {
-        display: block;
         flex: auto;
       }
 
@@ -88,5 +86,6 @@
   .DateChip {
     justify-self: end;
     text-align: right;
+    align-self: center;
   }
 }

@@ -6,22 +6,27 @@ import { prisma } from "~/db.server";
 import type {ActionFunctionArgs, ParamParseKey} from "@remix-run/router";
 import {StageChip} from "~/components/StageChip";
 import {ActGrid} from "~/components/ActGrid";
-import assert from "assert";
+import {getUserId} from "~/session.server";
 
 const PathNames = {
   stages: '/stages/:stageId',
 } as const;
 
-interface Args extends ActionFunctionArgs {
+interface Args {
   params: {
     stageId: string
   }
 }
 
-export const loader = async (params:Args) => {
-  console.log(params);
-  assert(params, 'Stage ID is required')
-  const nameToMatch = params.params.stageId.replace(/-+/g, ' ');
+interface StagesLoaderArgs extends LoaderArgs {
+  params: {
+    stageId: string
+  }
+}
+
+export const loader = async ({params, request}:StagesLoaderArgs) => {
+  console.log(request);
+  const nameToMatch = params.stageId.replace(/-+/g, ' ');
   console.log(nameToMatch);
   const stage = await prisma.location.findFirst({
     include: {
@@ -29,6 +34,13 @@ export const loader = async (params:Args) => {
         orderBy: {
           start: 'asc'
         },
+        include: {
+          savedAct: {
+            where: {
+              userId: await getUserId(request)
+            }
+          }
+        }
       },
     },
     where: {
@@ -39,10 +51,11 @@ export const loader = async (params:Args) => {
     },
   });
 
+  console.log(stage)
+
   // if (!stage) {
   //   return json({stage: []});
   // }
-  console.log(stage);
 
   return json({stage});
 };

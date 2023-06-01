@@ -3,11 +3,12 @@ import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
 import { getNoteListItems } from "~/models/note.server";
-import { requireUserId } from "~/session.server";
+import { getUserId } from "~/session.server";
 import { useUser } from "~/utils";
 
 export const loader = async ({ request }: LoaderArgs) => {
-  const userId = await requireUserId(request);
+  const userId = await getUserId(request) as string;
+
   const noteListItems = await getNoteListItems({ userId });
   return json({ noteListItems });
 };
@@ -17,8 +18,8 @@ export default function NotesPage() {
   const user = useUser();
 
   return (
-    <div className="flex h-full min-h-screen flex-col">
-      <header className="flex items-center justify-between bg-slate-800 p-4 text-white">
+    <div className="Notes flex h-full min-h-screen flex-col">
+      <header className="flex items-center justify-between bg-slate-800 p-4 text-white Notes-header">
         <h1 className="text-3xl font-bold">
           <Link to=".">Notes</Link>
         </h1>
@@ -33,8 +34,8 @@ export default function NotesPage() {
         </Form>
       </header>
 
-      <main className="flex h-full bg-white">
-        <div className="h-full w-80 border-r bg-gray-50">
+      <main className="flex h-full Notes-main">
+        <div className="h-full w-80 border-r Notes-list">
           <Link to="new" className="block p-4 text-xl text-blue-500">
             + New Note
           </Link>
@@ -49,7 +50,7 @@ export default function NotesPage() {
                 <li key={note.id}>
                   <NavLink
                     className={({ isActive }) =>
-                      `block border-b p-4 text-xl ${isActive ? "bg-white" : ""}`
+                      `block p-4 text-xl Notes-listItem`
                     }
                     to={note.id}
                   >

@@ -1,12 +1,14 @@
 import { prisma } from "~/db.server";
 import {Link, useLoaderData} from "@remix-run/react";
-import urlHelper from "~/helpers/url";
 import {StageChip} from "~/components/StageChip";
 
 export const loader = async () => {
   const stages = await prisma.location.findMany({
     include: {
       Act: true
+    },
+    orderBy: {
+      id: 'asc'
     }
   });
 
