@@ -53,8 +53,7 @@ export default function Index() {
       {user ? (
         <div>
           {data.filteredSavedActs.length === 0 ? (
-            <p>No saved acts yet. Head to <Link to="/acts" className="underline">Acts</Link> or <Link to="/stages"
-              className="underline">Stages</Link> and add some, why don't you?
+            <p>No saved acts yet. Select one of the menu links to view and add some, why don't you?
             </p>
           ) : (
             <ActGrid data={data.filteredSavedActs} options={{showStages: true}}></ActGrid>
