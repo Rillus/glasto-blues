@@ -45,7 +45,7 @@ export const loader = async ({params, request}:StagesLoaderArgs) => {
     },
     where: {
       name: {
-        contains: nameToMatch,
+        search: nameToMatch.split(" ").join(" & "),
         mode: 'insensitive'
       },
     },
