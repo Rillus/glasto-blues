@@ -10,10 +10,15 @@ export default {
   },
   safeName: function(name: string) {
     assert(name, "Name is required");
-    return name
+    // Note: doesn't work for:
+    // "Late Night Sessions: Run in the Jungle Ft D*minds & T&gt;i, I Am Jakes, T Lex B2B Kendrick, Ts2w"
+    return encodeURIComponent(name
       .trim()
       .toLowerCase()
-      .replace(/\W+/g, '-');
       // .replace(/[^A-Za-z0-9]/, '');
+      .replace(/[\:\/\,\(\)\[\]\{\}\&\;]/g, '')
+      .replace(/[\s]/g, '-')
+      .replace(/^-+|-+(?=-|$)/g, ''));
+
   }
 }
