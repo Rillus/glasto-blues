@@ -138,7 +138,7 @@ export default function ActsIndexRoute() {
           className={"Input"}
           type={"text"}
           id={"actSearch"}
-          placeholder={"Search for an act"}
+          placeholder={"Search for an act. Minimum 3 characters. Searches on full words only. i.e. 'The' will not return 'Theatre'"}
           onChange={(e) => {
             if (e.target.value.length === 0) {
               if (acts.length === 0){
