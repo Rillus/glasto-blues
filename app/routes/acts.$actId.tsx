@@ -3,6 +3,7 @@ import {Link, useLoaderData} from "@remix-run/react";
 import type {Params} from "@remix-run/react";
 import { prisma } from "~/db.server";
 import {getUserId} from "~/session.server";
+import {ActGrid} from "~/components/ActGrid";
 export type { SavedAct } from "@prisma/client";
 
 
@@ -18,15 +19,21 @@ interface ActsLoaderArgs extends LoaderArgs {
 
 export const loader = async ({params, request}:ActsLoaderArgs) => {
   const isSelected = new URL(request.url).searchParams.get("isSelected");
+  const actId = new URL(request.url).searchParams.get("actId");
   console.log('isSelected', isSelected);
 
   const nameToMatch = params.actId.replace(/-+/g, ' ');
   console.log('nameToMatch', nameToMatch);
-  const actItem = await prisma.act.findFirst({
+  const actItem = await prisma.act.findMany({
     where: {
+      ...(actId && {id: actId}),
       name: {
         search: nameToMatch.split(" ").join(" & ")
       },
+
+    },
+    orderBy: {
+      start: 'asc'
     },
     include: {
       savedAct: {
@@ -42,8 +49,8 @@ export const loader = async ({params, request}:ActsLoaderArgs) => {
     return json({actItem: null});
   } else {
     const userId = await getUserId(request) as string;
-    const actId = actItem.id;
-    if (actItem.savedAct.length === 0 && isSelected) {
+    const actId = actItem[0].id;
+    if (actItem[0].savedAct.length === 0 && isSelected === 'true') {
       console.log("Act is not saved");
       // Add SavedAct for this act
       const savedAct = await prisma.savedAct.create({
@@ -52,22 +59,22 @@ export const loader = async ({params, request}:ActsLoaderArgs) => {
           actId: actId
         }
       });
-      actItem.savedAct.push(savedAct);
-    } else if (actItem.savedAct.length > 0 && isSelected === 'false') {
+      actItem[0].savedAct.push(savedAct);
+    } else if (actItem[0].savedAct.length > 0 && isSelected === 'false') {
       console.log("Act is saved - remove it");
       // delete SavedAct for this act & user
       await prisma.savedAct.delete({
         where: {
-          id: actItem.savedAct[0].id
+          id: actItem[0].savedAct[0].id
         }
       });
-      actItem.savedAct = [];
+      actItem[0].savedAct = [];
     }
   }
 
   console.log(actItem);
 
-  return json({actItem});
+  return json({actItem: actItem[0], actItems: actItem});
 };
 
 export default function ActRoute() {
@@ -89,6 +96,7 @@ export default function ActRoute() {
         </Link>
       </h1>
       <p>{data.actItem.description}</p>
+      <ActGrid data={data.actItems}></ActGrid>
     </div>
   );
 }

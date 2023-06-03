@@ -11,7 +11,7 @@ export function ActChip(props: { name: string, id: string, isSelected: boolean }
 
   function addToLineup() {
     console.log('add to lineup', props.id, props.name, isSelected);
-    fetcher.load(`/acts/${urlHelper.safeName(props.name)}?isSelected=${!isSelected}`);
+    fetcher.load(`/acts/${urlHelper.safeName(props.name)}?isSelected=${!isSelected}&actId=${props.id}`);
     return;
   }
 
