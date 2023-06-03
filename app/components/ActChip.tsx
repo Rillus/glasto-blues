@@ -16,7 +16,6 @@ export function ActChip(props: { name: string, id: string, isSelected: boolean }
   }
 
   useEffect(() => {
-    console.log('useEffect', fetcher.data, fetcher.data?.actItem, fetcher.data?.actItem.savedAct.length > 0);
     // Discontinue API calls if the last page has been reached
     if (fetcher.data && fetcher.data?.length === 0) {
       console.log('no results');

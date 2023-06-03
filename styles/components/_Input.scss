@@ -1,0 +1,10 @@
+@import "../variables";
+
+.Input {
+  padding: $spacer/2 $spacer;
+  margin: auto;
+  border-radius: 5px;
+  background: rgba(255,255,255, 0.8);
+  border: 1px solid var(--white);
+  width: 50%;
+}

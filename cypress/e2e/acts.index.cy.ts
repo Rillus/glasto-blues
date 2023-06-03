@@ -14,6 +14,6 @@ describe("Acts index", () => {
     cy.visitAndCheck("/");
 
     cy.findByRole("link", { name: /acts/i }).click();
-    cy.findByText("10yrs of My Nu Leng");
+    cy.findAllByText("Circus Eruption");
   });
 });

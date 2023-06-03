@@ -18,6 +18,7 @@ interface Args extends RequestInit{
 export const loader = async ({request}:LoaderArgs) => {
   const take = 20;
   const page = Number(new URL(request.url).searchParams.get("page") || "1");
+  const search = new URL(request.url).searchParams.get("search");
   const allActs = await prisma.act.findMany({
     include: {
       location: true,
@@ -28,14 +29,25 @@ export const loader = async ({request}:LoaderArgs) => {
       }
     },
     orderBy: {
-      name: 'asc'
+      start: 'asc'
     },
-    take: take,
-    skip: (page - 1) * take
+    ...(!search && {
+      take: take,
+      skip: (page - 1) * take
+    }),
+    ...(search && {
+      where: {
+        name: {
+          search: search.split(" ").join(" & ")
+        }
+      }
+    })
   });
 
   return {
-    acts: allActs
+    acts: allActs,
+    search: search,
+    replace: !!search
   };
 }
 
@@ -78,7 +90,7 @@ export default function ActsIndexRoute() {
   useEffect(() => {
     if (!shouldFetch || !height) return;
     if (clientHeight + scrollPosition + 100 < height) return;
-    console.log('fetching');
+    console.log('fetching due to scroll');
     fetcher.load(`/acts?index&page=${page}`);
 
     setShouldFetch(false);
@@ -105,17 +117,45 @@ export default function ActsIndexRoute() {
 
     // Fetcher contains data, merge them and allow the possibility of another fetch
     if (fetcher.data && fetcher.data.acts.length > 0) {
-      console.log('fetecher data', fetcher.data, data, acts)
-      setActs((prevData) => [...prevData, ...fetcher.data.acts]);
-      setPage((page: number) => page + 1);
-      setShouldFetch(true);
+      console.log('fetcher data', fetcher.data, data, acts)
+      if(fetcher.data.replace) {
+        setActs(fetcher.data.acts);
+        setShouldFetch(false);
+        return;
+      } else {
+        setActs((prevData) => [...prevData, ...fetcher.data.acts]);
+        setPage((page: number) => page + 1);
+        setShouldFetch(true);
+      }
     }
   }, [fetcher.data]);
 
   return (
     <div ref={divHeight}>
-      <p>Here's some acts alphabetically (pagination coming soon):</p>
+      <div className={"Search"}>
+        Search:
+        <input
+          className={"Input"}
+          type={"text"}
+          id={"actSearch"}
+          placeholder={"Search for an act"}
+          onChange={(e) => {
+            if (e.target.value.length === 0) {
+              if (acts.length === 0){
+                fetcher.load(`/acts?index`);
+              }
+            } else if (e.target.value.length >= 3) {
+              fetcher.load(`/acts?index&search=${e.target.value}`);
+            } else {
+              setActs([]);
+            }
+          }}
+        />
+      </div>
       <ActGrid data={acts} options={{showStages: true}}></ActGrid>
+      {acts.length === 0 && (
+        <p>No acts found. Please enter at least 3 characters in the search field.</p>
+      )}
     </div>
   );
 }
