@@ -16,8 +16,8 @@ export default {
       .trim()
       .toLowerCase()
       // .replace(/[^A-Za-z0-9]/, '');
-      .replace(/[\:\/\,\(\)\[\]\{\}\&\;]/g, '')
-      .replace(/[\s]/g, '-')
+      .replace(/[\:\/\,\(\)\[\]\{\}\&\;\!\?]/g, '')
+      .replace(/\s/g, '-')
       .replace(/^-+|-+(?=-|$)/g, ''));
 
   }
