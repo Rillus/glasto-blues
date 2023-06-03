@@ -13,6 +13,9 @@ describe("Acts by id", () => {
     cy.login();
     cy.visitAndCheck("/acts/10yrs-of-my-nu-leng");
 
-    cy.findByText("10yrs of My Nu Leng");
+    // check heading
+    cy.findByRole("heading", {name:"10yrs of My Nu Leng"});
+    // check link
+    cy.findAllByRole("link", {name:"10yrs of My Nu Leng"});
   });
 });
