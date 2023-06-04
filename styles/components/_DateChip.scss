@@ -9,9 +9,11 @@
     border: 1px solid var(--currentContrast);
     display: inline-block;
     width: 47px;
+    min-width: 0;
     line-height: 30px;
     text-align: center;
     margin: $spacer/2 0;
+    text-transform: capitalize;
 
     &--wed {
       background-color: var(--wed);
@@ -36,6 +38,12 @@
     &--mon {
       background-color: var(--mon);
       color: var(--white);
+    }
+
+    &.isInactive {
+      background-color: #ccc;
+      color: #666;
+      border-color: #666;
     }
   }
 

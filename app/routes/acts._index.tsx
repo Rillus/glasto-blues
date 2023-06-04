@@ -20,6 +20,57 @@ export const loader = async ({request}:LoaderArgs) => {
   const take = 20;
   const page = Number(new URL(request.url).searchParams.get("page") || "1");
   const search = new URL(request.url).searchParams.get("search");
+  const selectedDay = new URL(request.url).searchParams.get("day");
+
+  interface dayNames {
+    [key: string]: {
+      start: Date,
+      end: Date
+    }
+  }
+
+  const dayTimes = {
+    wed: {
+      start: new Date('2023-06-21T00:00:00.000Z'),
+      end: new Date('2023-06-22T05:00:00.000Z')
+    },
+    thu: {
+      start: new Date('2023-06-22T00:00:00.000Z'),
+      end: new Date('2023-06-23T05:00:00.000Z')
+    },
+    fri: {
+      start: new Date('2023-06-23T00:00:00.000Z'),
+      end: new Date('2023-06-24T05:00:00.000Z')
+    },
+    sat: {
+      start: new Date('2023-06-24T00:00:00.000Z'),
+      end: new Date('2023-06-25T05:00:00.000Z')
+    },
+    sun: {
+      start: new Date('2023-06-25T00:00:00.000Z'),
+      end: new Date('2023-06-26T05:00:00.000Z')
+    },
+    mon: {
+      start: new Date('2023-06-26T00:00:00.000Z'),
+      end: new Date('2023-06-26T12:00:00.000Z')
+    }
+  };
+  // for each dayTimes, check if the current time is between start and end
+
+  let start = dayTimes['wed'].start;
+  let end = dayTimes['wed'].end;
+
+  if (selectedDay) {
+    Object.keys(dayTimes).forEach((day:keyof dayNames) => {
+      console.log(day, typeof day)
+      if (selectedDay === day) {
+        start = dayTimes[day as keyof typeof dayTimes].start;
+        end = dayTimes[day as keyof typeof dayTimes].end;
+      }
+    })
+  }
+
+  console.log('selectedDay', selectedDay, start, end);
   const allActs = await prisma.act.findMany({
     include: {
       location: true,
@@ -47,13 +98,20 @@ export const loader = async ({request}:LoaderArgs) => {
           search: search.split(" ").join(" & ")
         }
       }
-    })
+    }),
+    where: {
+      start: {
+        gte: start,
+        lt: end
+      }
+    }
   });
 
   return {
     acts: allActs,
     search: search,
-    replace: !!search
+    replace: !!search || page === 1,
+    page: page,
   };
 }
 
@@ -70,9 +128,10 @@ export default function ActsIndexRoute() {
   const [clientHeight, setClientHeight] = useState(0);
   const [height, setHeight] = useState(null);
   const [shouldFetch, setShouldFetch] = useState(true);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(initialData.page+1);
   const fetcher = useFetcher();
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<string>('wed');
 
   // Add Listeners to scroll and client resize
   useEffect(() => {
@@ -97,11 +156,9 @@ export default function ActsIndexRoute() {
   useEffect(() => {
     if (!shouldFetch || !height) return;
     if (clientHeight + scrollPosition + 100 < height) return;
-    console.log('fetching due to scroll');
-    fetcher.load(`/acts?index&page=${page}`);
+    fetcher.load(`/acts?index&page=${page}&day=${selectedDay}`);
     setShouldFetch(false);
     setIsLoading(true)
-
   }, [clientHeight, scrollPosition]);
 
   // Set height of the parent container whenever acts are loaded
@@ -127,17 +184,74 @@ export default function ActsIndexRoute() {
     // Fetcher contains data, merge them and allow the possibility of another fetch
     if (fetcher.data && fetcher.data.acts.length > 0) {
       console.log('fetcher data', fetcher.data, data, acts)
+      if(fetcher.data.search) {
+        setShouldFetch(false);
+      } else {
+        setShouldFetch(true);
+      }
       if(fetcher.data.replace) {
         setActs(fetcher.data.acts);
-        setShouldFetch(false);
+        setPage(2);
       } else {
         setActs((prevData) => [...prevData, ...fetcher.data.acts]);
         setPage((page: number) => page + 1);
-        setShouldFetch(true);
       }
       setIsLoading(false)
     }
   }, [fetcher.data]);
+
+  function isDaySelected(day: string) {
+    console.log('isDaySelected', selectedDay, day, selectedDay.includes(day))
+    if (selectedDay.includes(day)) {
+      return true;
+    }
+    return "";
+  }
+
+  function toggleDay(day: string) {
+    console.log('toggleDay', day);
+    let newSelectedDays = [];
+    if (selectedDay === day) {
+      setSelectedDay(day);
+    } else {
+      setSelectedDay(day);
+    }
+    setIsLoading(true)
+    fetcher.load(`/acts?index&day=${day}`);
+  }
+
+  function DaySelector() {
+
+    useEffect(() => {
+      if (selectedDay.length === 0) return;
+      // fetcher.load(`/acts?index&days=${selectedDay}`);
+    }, [selectedDay])
+
+    const days = ['wed', 'thu', 'fri', 'sat', 'sun', 'mon'];
+    let dayClass = (day: string) => {
+      let daySelectorClass = 'Button DateChip-day DateChip-day--';
+      daySelectorClass += day;
+      if (selectedDay === day) {
+        daySelectorClass += ' isActive';
+      } else {
+        daySelectorClass += ' isInactive';
+      }
+
+      return daySelectorClass;
+    }
+    return (
+      <div className={"ButtonGroup"}>
+        {days.map((day) => (
+          <button
+            className={dayClass(day)}
+            key={day}
+            onClick={() => toggleDay(day)}>
+            {day}
+          </button>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <div ref={divHeight}>
@@ -163,6 +277,9 @@ export default function ActsIndexRoute() {
             }
           }}
         />
+
+        <DaySelector />
+
       </div>
       <ActGrid data={acts} options={{showStages: true}}></ActGrid>
 
