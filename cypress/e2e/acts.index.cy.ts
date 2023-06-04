@@ -10,10 +10,26 @@ describe("Acts index", () => {
     //   title: faker.lorem.words(1),
     //   body: faker.lorem.sentences(1),
     // };
-    cy.login();
-    cy.visitAndCheck("/");
+    cy.visitAndCheck("/acts");
 
-    cy.findByRole("link", { name: /acts/i }).click();
     cy.findAllByText("Circus Eruption");
+  });
+
+  it("should load more acts on scroll", () => {
+    cy.visitAndCheck("/acts");
+
+    cy.scrollTo("bottom");
+    cy.findAllByText("Groovy Guy");
+  });
+
+  it("should show 'save' buttons if logged in", () => {
+    cy.visitAndCheck("/acts");
+
+    cy.findAllByRole("button", { name: "Add to lineup" }).should("not.exist");
+
+    cy.login();
+    cy.visitAndCheck("/acts");
+    cy.findAllByRole("button", { name: "Add to lineup" }).should("exist");
+
   });
 });
