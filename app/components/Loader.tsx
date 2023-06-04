@@ -1,4 +1,4 @@
-export function Loader(props: { size: String}) {
+export function Loader(props: { size: string}) {
   return (
     <svg
       version="1.1"
