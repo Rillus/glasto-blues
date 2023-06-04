@@ -2,6 +2,7 @@ import {Link, useFetcher} from "@remix-run/react";
 import urlHelper from "~/helpers/url";
 import {useEffect, useState} from "react";
 import {useOptionalUser} from "~/utils";
+import {Loader} from "~/components/Loader";
 
 export function ActChip(props: { name: string, id: string, isSelected: boolean }) {
   const fetcher = useFetcher();
@@ -12,6 +13,9 @@ export function ActChip(props: { name: string, id: string, isSelected: boolean }
   function addToLineup() {
     console.log('add to lineup', props.id, props.name, isSelected);
     fetcher.load(`/acts/${urlHelper.safeName(props.name)}?isSelected=${!isSelected}&actId=${props.id}`);
+    setSelectedIcon(
+      (<Loader size={"20px"} />)
+    )
     return;
   }
 
