@@ -132,6 +132,7 @@ export default function ActsIndexRoute() {
   const fetcher = useFetcher();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string>('wed');
+  const [actGridOptions] = useState({showStages: true});
 
   // Add Listeners to scroll and client resize
   useEffect(() => {
@@ -281,7 +282,7 @@ export default function ActsIndexRoute() {
         <DaySelector />
 
       </div>
-      <ActGrid data={acts} options={{showStages: true}}></ActGrid>
+      <ActGrid data={acts} options={actGridOptions}></ActGrid>
 
       <div style={{position: 'relative', marginTop: '40px'}}>
         <div style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>

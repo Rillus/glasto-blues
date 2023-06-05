@@ -5,7 +5,7 @@ export function DateChip(props: { start: Date, end: Date }) {
   const startDay = startDate.toLocaleDateString('en', {weekday: 'short'});
   let endDate = new Date(props.end);
   let endDateOffset = endDate.getTimezoneOffset() * 60000;
-  endDate = new Date(endDate.getTime() - endDateOffset);
+  endDate = new Date(endDate.getTime() + endDateOffset);
   const endDay = endDate.toLocaleDateString('en', {weekday: 'short'});
 
   function dayChip(day: string) {

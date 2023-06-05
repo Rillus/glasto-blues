@@ -4,6 +4,7 @@ import type {Params} from "@remix-run/react";
 import { prisma } from "~/db.server";
 import {getUserId} from "~/session.server";
 import {ActGrid} from "~/components/ActGrid";
+import {useState} from "react";
 export type { SavedAct } from "@prisma/client";
 
 
@@ -36,6 +37,7 @@ export const loader = async ({params, request}:ActsLoaderArgs) => {
       start: 'asc'
     },
     include: {
+      location: true,
       savedAct: {
         where: {
           userId: await getUserId(request)
@@ -79,6 +81,7 @@ export const loader = async ({params, request}:ActsLoaderArgs) => {
 
 export default function ActRoute() {
   const data = useLoaderData<typeof loader>();
+  const [actGridOptions] = useState({showStages: true});
 
   if (!data.actItem) {
     return (
@@ -96,7 +99,7 @@ export default function ActRoute() {
         </Link>
       </h1>
       <p>{data.actItem.description}</p>
-      <ActGrid data={data.actItems}></ActGrid>
+      <ActGrid data={data.actItems} options={actGridOptions}></ActGrid>
     </div>
   );
 }
