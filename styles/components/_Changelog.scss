@@ -1,0 +1,17 @@
+@import "../variables";
+
+.Changelog {
+  ol {
+    font-size: 1.6rem;
+
+    li {
+      margin-top: $spacer;
+    }
+  }
+
+  li li {
+    margin-top: 0;
+    font-size: 1.2rem;
+    list-style: inside;
+  }
+}

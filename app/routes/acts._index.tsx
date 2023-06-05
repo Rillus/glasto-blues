@@ -177,6 +177,9 @@ export default function ActsIndexRoute() {
     // Discontinue API calls if the last page has been reached
     if (fetcher.data && fetcher.data.acts.length === 0) {
       console.log('no more results')
+      if (fetcher.data.replace) {
+        setActs([]);
+      }
       setShouldFetch(false);
       setIsLoading(false)
       return;
