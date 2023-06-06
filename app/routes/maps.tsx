@@ -1,6 +1,6 @@
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { useState } from "react";
-import { MapInteractionCSS } from 'react-map-interaction';
+import { MapInteractionCSS } from "react-map-interaction";
 
 export default function Maps() {
   const [selectedMap, setSelectedMap] = useState('official');
