@@ -4,6 +4,12 @@ export default function Changelog() {
       <ol>
         <li>2023-06-05:
           <ul>
+            <li>Added maps route</li>
+            <li>Added map viewer and maps</li>
+          </ul>
+        </li>
+        <li>2023-06-05:
+          <ul>
             <li>Added a changelog page</li>
             <li>Performance enhancement for Acts page (ActGrid options move to useState)</li>
             <li>Fix end time (was adding, rather than subtracting timezone</li>
