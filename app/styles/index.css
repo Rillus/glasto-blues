@@ -318,15 +318,20 @@ input, textarea {
 
 .ButtonGroup {
   display: flex;
-  flex-wrap: nowrap;
-  margin-left: 12px; }
-  .ButtonGroup .Button:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-right: 0; }
-  .ButtonGroup .Button:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0; }
+  flex-wrap: nowrap; }
+  .ButtonGroup .Button {
+    margin: 0; }
+    .ButtonGroup .Button:not(:last-child) {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-right: 0; }
+    .ButtonGroup .Button:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0; }
+    .ButtonGroup .Button.isInactive {
+      background-color: #ccc;
+      color: #666;
+      border-color: #666; }
 
 :root {
   --background: #fff;

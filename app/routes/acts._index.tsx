@@ -244,7 +244,7 @@ export default function ActsIndexRoute() {
       return daySelectorClass;
     }
     return (
-      <div className={"ButtonGroup"}>
+      <div className={"ButtonGroup"} style={{marginLeft: '12px'}}>
         {days.map((day) => (
           <button
             className={dayClass(day)}

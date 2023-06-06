@@ -76,6 +76,16 @@ export default function App() {
                 Stages
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                className={({ isActive, isPending }) =>
+                  isPending ? "isPending" : isActive ? "isActive" : ""
+                }
+                to={'maps'}
+              >
+                Maps
+              </NavLink>
+            </li>
           </ul>
         </header>
         <section className="Main">
