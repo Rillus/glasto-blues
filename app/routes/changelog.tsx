@@ -2,7 +2,12 @@ export default function Changelog() {
   return (
     <main className={"Changelog"}>
       <ol>
-        <li>2023-06-05:
+        <li>2023-06-07:
+          <ul>
+            <li>Adds ability to delete stages and acts if logged in as admin email</li>
+          </ul>
+        </li>
+        <li>2023-06-06:
           <ul>
             <li>Added maps route</li>
             <li>Added map viewer and maps</li>
