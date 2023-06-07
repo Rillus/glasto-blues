@@ -5,6 +5,7 @@ import { prisma } from "~/db.server";
 import {getUserId} from "~/session.server";
 import {ActGrid} from "~/components/ActGrid";
 import {useState} from "react";
+import {useOptionalUser} from "~/utils";
 export type { SavedAct } from "@prisma/client";
 
 
@@ -46,8 +47,7 @@ export const loader = async ({params, request}:ActsLoaderArgs) => {
     }
   });
 
-  if  (!actItem) {
-    console.log("Act not found");
+  if  (!actItem || actItem.length === 0) {
     return json({actItem: null});
   } else {
     const userId = await getUserId(request) as string;
@@ -82,6 +82,7 @@ export const loader = async ({params, request}:ActsLoaderArgs) => {
 export default function ActRoute() {
   const data = useLoaderData<typeof loader>();
   const [actGridOptions] = useState({showStages: true});
+  const user = useOptionalUser();
 
   if (!data.actItem) {
     return (
@@ -97,6 +98,9 @@ export default function ActRoute() {
         <Link to=".">
           {data.actItem.name}
         </Link>
+        {user && user.email === "riley@ticketlab.co.uk" ? (
+          <small>&nbsp;<small><small><a href={`/admin/delete/act/${data.actItem.id}`}>Delete </a></small></small></small>
+        ) : null}
       </h1>
       <p>{data.actItem.description}</p>
       <ActGrid data={data.actItems} options={actGridOptions}></ActGrid>

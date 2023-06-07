@@ -1,6 +1,6 @@
 import type {ActionArgs} from "@remix-run/node";
 import {json, redirect} from "@remix-run/node";
-import {Form, useActionData} from "@remix-run/react";
+import {Form, Outlet, useActionData} from "@remix-run/react";
 import {useEffect, useRef} from "react";
 import {requireUserId} from "~/session.server";
 import {useOptionalUser} from "~/utils";
@@ -24,10 +24,10 @@ interface GlastoLocation {
 }
 
 export const action = async ({ request }: ActionArgs) => {
-  const userId = await requireUserId(request);
-
   const formData = await request.formData();;
   const body = formData.get("body");
+
+  // TODO: validate that the user is an admin
 
   if (typeof body !== "string" || body.length === 0) {
     return json(
@@ -121,6 +121,7 @@ export default function AdminPage() {
 
   return (
     <div>
+      <Outlet />
       {user && user.email === "riley@ticketlab.co.uk" ? (
         <Form
           method="post"
