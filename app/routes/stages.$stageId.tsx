@@ -7,6 +7,7 @@ import type {ActionFunctionArgs, ParamParseKey} from "@remix-run/router";
 import {StageChip} from "~/components/StageChip";
 import {ActGrid} from "~/components/ActGrid";
 import {getUserId} from "~/session.server";
+import {useOptionalUser} from "~/utils";
 
 const PathNames = {
   stages: '/stages/:stageId',
@@ -51,8 +52,6 @@ export const loader = async ({params, request}:StagesLoaderArgs) => {
     },
   });
 
-  console.log(stage)
-
   // if (!stage) {
   //   return json({stage: []});
   // }
@@ -62,6 +61,7 @@ export const loader = async ({params, request}:StagesLoaderArgs) => {
 
 export default function StageRoute() {
   const data = useLoaderData<typeof loader>();
+  const user = useOptionalUser();
 
   if (!data.stage) {
     return (
@@ -75,6 +75,9 @@ export default function StageRoute() {
     <div className="main">
       <h1 className="u-text-center">
         <StageChip name={data.stage.name} id={data.stage.id} />
+        {user && user.email === "riley@ticketlab.co.uk" ? (
+          <small>&nbsp;<small><small><a href={`/admin/delete/${data.stage.id}`}>Delete </a></small></small></small>
+        ) : null}
       </h1>
       <p>{data.stage.description}</p>
       <ActGrid data={data.stage.Act}/>
