@@ -3,11 +3,15 @@ import {prisma} from "~/db.server";
 
 import type { Location } from "@prisma/client";
 import type { Act } from "@prisma/client";
-import {json} from "@remix-run/node";
+import {json, LoaderArgs} from "@remix-run/node";
 
-//loader
+interface DeleteStageLoaderArgs extends LoaderArgs {
+  params: {
+    stageId: string
+  }
+}
 
-export const loader = async ({params, request}:ActsLoaderArgs) => {
+export const loader = async ({params, request}:DeleteStageLoaderArgs) => {
   // delete stage by id
   let stage = {}
 

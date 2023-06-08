@@ -3,11 +3,11 @@ import {prisma} from "~/db.server";
 
 import type { Location } from "@prisma/client";
 import type { Act } from "@prisma/client";
-import {json} from "@remix-run/node";
+import {json, LoaderArgs} from "@remix-run/node";
 
 //loader
 
-export const loader = async ({params, request}:ActsLoaderArgs) => {
+export const loader = async ({params, request}:LoaderArgs) => {
   // delete stage by id
   console.log(params.actId)
   let act = {}
